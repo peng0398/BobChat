@@ -1,4 +1,4 @@
-package com.bob.bobchat;
+package com.bob.bobchat.ui;
 
 import android.content.Intent;
 import android.text.TextUtils;
@@ -6,6 +6,8 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.bob.bobchat.BobApplication;
+import com.bob.bobchat.R;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 
@@ -58,7 +60,10 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onError(int code, String message) {
-                        Log.d("main", "登陆聊天服务器失败！");
+                        Log.d("main", "登陆聊天服务器失败！" + "code:" + code + "  message: " + message);
+                        if (code == 202) {
+                            Toast.makeText(BobApplication.getAppContext(), "用户名或密码错误", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
             }
@@ -84,6 +89,9 @@ public class LoginActivity extends BaseActivity {
                                 EMClient.getInstance().chatManager().loadAllConversations();
                                 Log.d("main", "登陆聊天服务器成功！");
                                 Toast.makeText(BobApplication.getAppContext(), "登陆成功", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
                             }
                         })
         );

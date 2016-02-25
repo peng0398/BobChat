@@ -1,4 +1,4 @@
-package com.bob.bobchat;
+package com.bob.bobchat.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

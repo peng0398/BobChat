@@ -1,10 +1,12 @@
-package com.bob.bobchat;
+package com.bob.bobchat.ui;
 
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.bob.bobchat.BobApplication;
+import com.bob.bobchat.R;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
 
