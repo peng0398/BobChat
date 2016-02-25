@@ -1,21 +1,19 @@
 package com.bob.bobchat.ui;
 
 import android.os.Bundle;
-import android.support.annotation.FloatRange;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.bob.bobchat.R;
 import com.bob.bobchat.ui.fragment.BaseFragment;
 import com.bob.bobchat.ui.fragment.ContactFragment;
+import com.bob.bobchat.ui.fragment.ConversationFragment;
+import com.bob.bobchat.ui.fragment.SettingFragment;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -42,8 +40,8 @@ public class MainActivity extends BaseActivity {
         final Map<Integer, BaseFragment> mFragments = new HashMap<Integer, BaseFragment>();
 
         mFragments.put(0,new ContactFragment());
-        mFragments.put(1,new ContactFragment());
-        mFragments.put(2,new ContactFragment());
+        mFragments.put(1,new ConversationFragment());
+        mFragments.put(2,new SettingFragment());
 
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
