@@ -8,17 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bob.bobchat.BobApplication;
-import com.bob.bobchat.R;
 
 /**
  * 作者 bob
  * 日期 16-2-25.
  */
-public class BaseFragment extends Fragment{
+public abstract class BaseFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        return View.inflate(BobApplication.getAppContext(), R.layout.activity_login,null);
+        return View.inflate(BobApplication.getAppContext(), initLayout(),null);
     }
+
+    protected abstract int initLayout();
 }
