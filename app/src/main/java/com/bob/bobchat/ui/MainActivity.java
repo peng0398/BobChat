@@ -38,6 +38,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        toolbar.setTitle("BobChat 1.0");
         titles = new ArrayList<CharSequence>();
 
         titles.add("对话");
@@ -46,9 +47,9 @@ public class MainActivity extends BaseActivity {
 
         final Map<Integer, BaseFragment> mFragments = new HashMap<Integer, BaseFragment>();
 
-        mFragments.put(0,new ConversationFragment());
-        mFragments.put(1,new ContactFragment());
-        mFragments.put(2,new SettingFragment());
+        mFragments.put(0, new ConversationFragment());
+        mFragments.put(1, new ContactFragment());
+        mFragments.put(2, new SettingFragment());
 
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
