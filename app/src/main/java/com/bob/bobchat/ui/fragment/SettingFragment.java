@@ -11,4 +11,14 @@ public class SettingFragment extends BaseFragment {
     protected int initLayout() {
         return R.layout.fragment_setting;
     }
+
+    @Override
+    protected void initView() {
+
+    }
+
+    @Override
+    protected void initData() {
+
+    }
 }

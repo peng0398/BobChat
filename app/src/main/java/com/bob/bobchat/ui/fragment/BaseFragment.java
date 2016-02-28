@@ -13,7 +13,10 @@ import butterknife.ButterKnife;
  * 作者 bob
  * 日期 16-2-25.
  */
-public abstract class BaseFragment extends Fragment{
+public abstract class BaseFragment extends Fragment {
+
+    boolean isFirst = true;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -23,5 +26,22 @@ public abstract class BaseFragment extends Fragment{
         return view;
     }
 
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (isFirst) {
+                isFirst = false;
+                initView();
+                initData();
+            }
+        }
+    }
+
     protected abstract int initLayout();
+
+    protected abstract void initView();
+
+    protected abstract void initData();
 }

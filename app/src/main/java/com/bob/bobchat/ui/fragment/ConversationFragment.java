@@ -11,4 +11,14 @@ public class ConversationFragment extends BaseFragment {
     protected int initLayout() {
         return R.layout.fragment_conversation;
     }
+
+    @Override
+    protected void initView() {
+
+    }
+
+    @Override
+    protected void initData() {
+
+    }
 }
