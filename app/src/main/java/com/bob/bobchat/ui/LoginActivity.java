@@ -57,13 +57,19 @@ public class LoginActivity extends BaseActivity {
                     public void onProgress(int progress, String status) {
 
                     }
-
                     @Override
-                    public void onError(int code, String message) {
+                    public void onError(final int code, String message) {
                         Log.d("main", "登陆聊天服务器失败！" + "code:" + code + "  message: " + message);
-                        if (code == 202) {
-                            Toast.makeText(BobApplication.getAppContext(), "用户名或密码错误", Toast.LENGTH_SHORT).show();
-                        }
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (code == 202) {
+                                    Toast.makeText(BobApplication.getAppContext(), "用户名或密码错误", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
                     }
                 });
             }
@@ -100,6 +106,11 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected int initLayout() {
         return R.layout.activity_login;
+    }
+
+    @Override
+    protected void initToolBar() {
+        toolbar.setTitle("登陆");
     }
 
 }

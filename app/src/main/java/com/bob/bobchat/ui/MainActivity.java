@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.SparseArray;
 
 import com.bob.bobchat.R;
 import com.bob.bobchat.ui.fragment.BaseFragment;
@@ -14,9 +15,7 @@ import com.bob.bobchat.ui.fragment.ConversationFragment;
 import com.bob.bobchat.ui.fragment.SettingFragment;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 
@@ -38,14 +37,12 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        toolbar.setTitle("BobChat 1.0");
         titles = new ArrayList<CharSequence>();
-
-        titles.add("对话");
+        titles.add("会话");
         titles.add("联系人");
         titles.add("设置");
 
-        final Map<Integer, BaseFragment> mFragments = new HashMap<Integer, BaseFragment>();
+        final SparseArray<BaseFragment> mFragments = new SparseArray<>();
 
         mFragments.put(0, new ConversationFragment());
         mFragments.put(1, new ContactFragment());
@@ -71,11 +68,22 @@ public class MainActivity extends BaseActivity {
         viewPager.setAdapter(fragmentPagerAdapter);
         sliding_tabs.setupWithViewPager(viewPager);
         sliding_tabs.setTabMode(TabLayout.MODE_FIXED);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(sliding_tabs));
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(sliding_tabs){
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                toolbar.setTitle(titles.get(position));
+            }
+        });
     }
 
     @Override
     protected int initLayout() {
         return R.layout.activity_main;
+    }
+
+    @Override
+    protected void initToolBar() {
+        toolbar.setTitle("会话");
     }
 }

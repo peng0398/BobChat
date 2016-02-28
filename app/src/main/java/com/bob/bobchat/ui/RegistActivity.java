@@ -36,6 +36,7 @@ public class RegistActivity extends BaseActivity {
         final String pwd = et_pwd.getText().toString().trim();
         if (TextUtils.isEmpty(user) || TextUtils.isEmpty(pwd)) {
             Toast.makeText(BobApplication.getAppContext(), "用户名或密码不能为空", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         Observable<String> observable = Observable.create(new Observable.OnSubscribe<String>() {
@@ -87,5 +88,10 @@ public class RegistActivity extends BaseActivity {
     @Override
     protected int initLayout() {
         return R.layout.activity_regist;
+    }
+
+    @Override
+    protected void initToolBar() {
+        toolbar.setTitle("注册");
     }
 }

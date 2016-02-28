@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bob.bobchat.BobApplication;
+import butterknife.ButterKnife;
 
 /**
  * 作者 bob
@@ -18,7 +18,9 @@ public abstract class BaseFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        return View.inflate(BobApplication.getAppContext(), initLayout(),null);
+        View view = inflater.inflate(initLayout(), container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     protected abstract int initLayout();

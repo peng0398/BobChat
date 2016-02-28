@@ -27,9 +27,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
         fl_content = ((FrameLayout) findViewById(R.id.fl_content));
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         this.fl_content.addView(View.inflate(this, initLayout(), null));
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        initToolBar();
+        setSupportActionBar(toolbar);
+
         ButterKnife.bind(this);
     }
 
@@ -37,6 +40,8 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 加载布局文件
      */
     protected abstract int initLayout();
+
+    protected abstract void initToolBar();
 
     @Override
     protected void onDestroy() {
