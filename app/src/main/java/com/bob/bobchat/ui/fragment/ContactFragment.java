@@ -1,15 +1,17 @@
 package com.bob.bobchat.ui.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bob.bobchat.BobApplication;
 import com.bob.bobchat.R;
+import com.bob.bobchat.ui.ChatActivity;
 import com.bob.bobchat.utils.ChatHelper;
 
 import java.util.ArrayList;
@@ -39,7 +41,9 @@ public class ContactFragment extends BaseFragment {
     @Override
     protected void initView() {
         contactAdapter = new ContactAdapter();
+
         rv_container.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         rv_container.setAdapter(contactAdapter);
     }
 
@@ -61,8 +65,7 @@ public class ContactFragment extends BaseFragment {
 
             @Override
             public void onNext(List<String> strings) {
-                Toast.makeText(BobApplication.getAppContext(), "获取好友列表成功", Toast.LENGTH_SHORT).show();
-
+//                Toast.makeText(BobApplication.getAppContext(), "获取好友列表成功", Toast.LENGTH_SHORT).show();
                 if (strings.size() > 0) {
                     contactAdapter.setUsers(strings);
                     contactAdapter.notifyDataSetChanged();
@@ -88,8 +91,16 @@ public class ContactFragment extends BaseFragment {
         }
 
         @Override
-        public void onBindViewHolder(ContactHolder holder, int position) {
+        public void onBindViewHolder(final ContactHolder holder,  int position) {
             holder.tv_username.setText(users.get(position));
+            holder.ll_user_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(),ChatActivity.class);
+                    intent.putExtra("user_info",users.get(holder.getAdapterPosition()));
+                    getActivity().startActivity(intent);
+                }
+            });
         }
 
 
@@ -102,10 +113,12 @@ public class ContactFragment extends BaseFragment {
     class ContactHolder extends RecyclerView.ViewHolder {
 
         TextView tv_username;
+        LinearLayout ll_user_item;
 
         public ContactHolder(View itemView) {
             super(itemView);
             tv_username = ((TextView) itemView.findViewById(R.id.tv_username));
+            ll_user_item = ((LinearLayout) itemView.findViewById(R.id.ll_user_item));
         }
     }
 }

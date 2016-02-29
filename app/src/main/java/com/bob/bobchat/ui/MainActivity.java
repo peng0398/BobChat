@@ -67,7 +67,10 @@ public class MainActivity extends BaseActivity {
 
         viewPager.setAdapter(fragmentPagerAdapter);
         sliding_tabs.setupWithViewPager(viewPager);
+        //替换默认的ViewPageOnTabSelectedListener，保证切换时没有scrolling效果
+        sliding_tabs.setOnTabSelectedListener(new ViewPagerOnTabSelectedListener(viewPager));
         sliding_tabs.setTabMode(TabLayout.MODE_FIXED);
+
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(sliding_tabs){
             @Override
             public void onPageSelected(int position) {
@@ -86,4 +89,29 @@ public class MainActivity extends BaseActivity {
     protected void initToolBar() {
         toolbar.setTitle("会话");
     }
+
+    public class ViewPagerOnTabSelectedListener implements TabLayout.OnTabSelectedListener {
+        private final ViewPager mViewPager;
+
+        public ViewPagerOnTabSelectedListener(ViewPager viewPager) {
+            mViewPager = viewPager;
+        }
+
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+            //覆盖之前的方法:传入false，保证fragment切换时不会有scrollinng效果
+            mViewPager.setCurrentItem(tab.getPosition(),false);
+        }
+
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {
+            // No-op
+        }
+
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {
+            // No-op
+        }
+    }
+
 }
