@@ -13,6 +13,7 @@ import com.bob.bobchat.BobApplication;
 import com.bob.bobchat.R;
 import com.bob.bobchat.ui.ChatActivity;
 import com.bob.bobchat.utils.ChatHelper;
+import com.hyphenate.easeui.EaseConstant;
 
 import java.util.ArrayList;
 import java.util.List;

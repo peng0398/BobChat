@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.bob.bobchat"
-        minSdkVersion 19
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -28,4 +28,5 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
     compile 'com.android.support:design:23.2.0'
+    compile project(':easeui')
 }
