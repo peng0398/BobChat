@@ -2,7 +2,7 @@ package com.bob.bobchat.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
+import android.view.View;
 
 import com.bob.bobchat.R;
 import com.hyphenate.easeui.EaseConstant;
@@ -24,9 +24,7 @@ public class ChatActivity extends BaseActivity{
     @Override
     protected void initToolBar() {
         user_id = getIntent().getStringExtra("user_info");
-        if (!TextUtils.isEmpty(user_id)){
-            toolbar.setTitle(user_id);
-        }
+        toolbar.setVisibility(View.GONE);
     }
 
     @Override

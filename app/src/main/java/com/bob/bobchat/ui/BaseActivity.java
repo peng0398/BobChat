@@ -28,11 +28,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_base);
         fl_content = ((FrameLayout) findViewById(R.id.fl_content));
         this.fl_content.addView(View.inflate(this, initLayout(), null));
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         initToolBar();
         setSupportActionBar(toolbar);
-
         ButterKnife.bind(this);
     }
 

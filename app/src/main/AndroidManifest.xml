@@ -56,9 +56,17 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.RegistActivity" />
-        <activity android:name=".ui.MainActivity" />
+        <activity android:name=".ui.MainActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".ui.LoginActivity" />
         <activity android:name=".ui.ChatActivity"/>
+        <!--EaseUI中用于展示图片的activity-->
+        <activity android:name="com.hyphenate.easeui.ui.EaseShowBigImageActivity"/>
+        <!--EaseUI中用于展示地图的activity-->
+        <activity android:name="com.hyphenate.easeui.ui.EaseBaiduMapActivity"/>
+        <activity android:name="com.hyphenate.easeui.ui.EaseBaseActivity"/>
+        <activity android:name="com.hyphenate.easeui.ui.EaseShowNormalFileActivity"/>
+        <activity android:name="com.hyphenate.easeui.ui.EaseShowVideoActivity"/>
     </application>
 
 </manifest>

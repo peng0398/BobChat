@@ -1,5 +1,6 @@
 package com.bob.bobchat.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -9,10 +10,10 @@ import android.support.v4.view.ViewPager;
 import android.util.SparseArray;
 
 import com.bob.bobchat.R;
-import com.bob.bobchat.ui.fragment.BaseFragment;
 import com.bob.bobchat.ui.fragment.ContactFragment;
-import com.bob.bobchat.ui.fragment.ConversationFragment;
 import com.bob.bobchat.ui.fragment.SettingFragment;
+import com.hyphenate.chat.EMConversation;
+import com.hyphenate.easeui.ui.EaseConversationListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,10 +43,24 @@ public class MainActivity extends BaseActivity {
         titles.add("联系人");
         titles.add("设置");
 
-        final SparseArray<BaseFragment> mFragments = new SparseArray<>();
+        final SparseArray<Fragment> mFragments = new SparseArray<>();
 
-        mFragments.put(0, new ConversationFragment());
+        //添加会话fragment
+        EaseConversationListFragment conversationListFragment = new EaseConversationListFragment();
+
+        conversationListFragment.setConversationListItemClickListener(new EaseConversationListFragment.EaseConversationListItemClickListener() {
+            @Override
+            public void onListItemClicked(EMConversation conversation) {
+                Intent intent = new Intent(MainActivity.this,ChatActivity.class);
+                intent.putExtra("user_info",conversation.getUserName());
+                startActivity(intent);
+            }
+        });
+
+        mFragments.put(0, conversationListFragment);
+        //添加联系人列表fragment
         mFragments.put(1, new ContactFragment());
+        //添加设置fragment
         mFragments.put(2, new SettingFragment());
 
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {

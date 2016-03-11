@@ -2,8 +2,11 @@ package com.hyphenate.easeui.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
@@ -23,7 +26,8 @@ public abstract class EaseBaseFragment extends Fragment{
         initView();
         setUpView();
     }
-    
+
+
     /**
      * 显示标题栏
      */
