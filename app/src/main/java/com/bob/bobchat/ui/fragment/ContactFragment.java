@@ -1,6 +1,9 @@
 package com.bob.bobchat.ui.fragment;
 
+import android.app.Application;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -8,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bob.bobchat.BobApplication;
 import com.bob.bobchat.R;
@@ -17,6 +21,8 @@ import com.hyphenate.easeui.EaseConstant;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import rx.Subscriber;
@@ -33,6 +39,16 @@ public class ContactFragment extends BaseFragment {
     @Bind(R.id.rv_container)
     RecyclerView rv_container;
     private ContactAdapter contactAdapter;
+
+    @Inject
+    ChatHelper helper;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Application application = getActivity().getApplication();
+        ((BobApplication) application).getBuild().inject(this);
+    }
 
     @Override
     protected int initLayout() {
@@ -51,7 +67,9 @@ public class ContactFragment extends BaseFragment {
     @Override
     protected void initData() {
 
-        ChatHelper.getInstance().getContacts().subscribeOn(Schedulers.io()).
+        Toast.makeText(getActivity(), "hhhh", Toast.LENGTH_SHORT).show();
+
+        helper.getContacts().subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<List<String>>() {
             @Override
             public void onCompleted() {
@@ -92,13 +110,13 @@ public class ContactFragment extends BaseFragment {
         }
 
         @Override
-        public void onBindViewHolder(final ContactHolder holder,  int position) {
+        public void onBindViewHolder(final ContactHolder holder, int position) {
             holder.tv_username.setText(users.get(position));
             holder.ll_user_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(getActivity(),ChatActivity.class);
-                    intent.putExtra("user_info",users.get(holder.getAdapterPosition()));
+                    Intent intent = new Intent(getActivity(), ChatActivity.class);
+                    intent.putExtra("user_info", users.get(holder.getAdapterPosition()));
                     getActivity().startActivity(intent);
                 }
             });

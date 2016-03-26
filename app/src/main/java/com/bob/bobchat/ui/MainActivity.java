@@ -80,6 +80,7 @@ public class MainActivity extends BaseActivity {
             }
         };
 
+        viewPager.setOffscreenPageLimit(0);
         viewPager.setAdapter(fragmentPagerAdapter);
         sliding_tabs.setupWithViewPager(viewPager);
         //替换默认的ViewPageOnTabSelectedListener，保证切换时没有scrolling效果
