@@ -2,6 +2,8 @@ package com.bob.bobchat.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -21,6 +23,7 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.controller.EaseUI;
 import com.hyphenate.easeui.ui.EaseConversationListFragment;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +37,12 @@ import butterknife.Bind;
  */
 public class MainActivity extends BaseActivity {
 
+    private static final int ONMESSAGE_RECEIVER = 1;
+    private static final int ONCMDMESSAGE_RECEIVER = 2;
+    private static final int ONMESSAGE_READACKRECEIVED = 3;
+    private static final int ONMESSAGEDELIVERYACK_RECEIVED = 4;
+    private static final int ONMESSAGE_CHANGED = 5;
+
     @Bind(R.id.sliding_tabs)
     TabLayout sliding_tabs;
 
@@ -45,41 +54,69 @@ public class MainActivity extends BaseActivity {
 
     private List<CharSequence> titles;
 
+    static class MainHandler extends Handler {
+
+        WeakReference<MainActivity> reference;
+
+        MainActivity activity;
+
+        public MainHandler(MainActivity activity) {
+            this.reference = new WeakReference<MainActivity>(activity);
+            this.activity = reference.get();
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case ONMESSAGE_RECEIVER:
+                    Toast.makeText(activity.application, "onMessageReceived", Toast.LENGTH_SHORT).show();
+                    break;
+                case ONCMDMESSAGE_RECEIVER:
+                    Toast.makeText(activity.application, "onCmdMessageReceived", Toast.LENGTH_SHORT).show();
+                    break;
+                case ONMESSAGE_READACKRECEIVED:
+                    Toast.makeText(activity.application, "onmessage_readackreceived", Toast.LENGTH_SHORT).show();
+                    break;
+                case ONMESSAGEDELIVERYACK_RECEIVED:
+                    Toast.makeText(activity.application, "onmessagedeliveryack_received", Toast.LENGTH_SHORT).show();
+                    break;
+                case ONMESSAGE_CHANGED:
+                    Toast.makeText(activity.application, "onmessage_changed", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    }
+
+    private MainHandler mainHandler = new MainHandler(this);
+
 
     EMMessageListener msgListener = new EMMessageListener() {
 
+
         @Override
         public void onMessageReceived(List<EMMessage> messages) {
-
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(application, "onMessageReceived", Toast.LENGTH_SHORT).show();
-                }
-            });
+            mainHandler.sendEmptyMessage(ONMESSAGE_RECEIVER);
         }
 
         @Override
         public void onCmdMessageReceived(List<EMMessage> messages) {
-            Toast.makeText(application, "onCmdMessageReceived", Toast.LENGTH_SHORT).show();
+            mainHandler.sendEmptyMessage(ONCMDMESSAGE_RECEIVER);
         }
 
         @Override
         public void onMessageReadAckReceived(List<EMMessage> messages) {
-            Toast.makeText(application, "onMessageReadAckReceived", Toast.LENGTH_SHORT).show();
-
+            mainHandler.sendEmptyMessage(ONMESSAGE_READACKRECEIVED);
         }
 
         @Override
         public void onMessageDeliveryAckReceived(List<EMMessage> message) {
-            Toast.makeText(application, "onMessageDeliveryAckReceived", Toast.LENGTH_SHORT).show();
-
+            mainHandler.sendEmptyMessage(ONMESSAGEDELIVERYACK_RECEIVED);
         }
 
         @Override
         public void onMessageChanged(EMMessage message, Object change) {
-            Toast.makeText(application, "onMessageChanged", Toast.LENGTH_SHORT).show();
-
+            mainHandler.sendEmptyMessage(ONMESSAGE_CHANGED);
         }
     };
 
@@ -91,8 +128,6 @@ public class MainActivity extends BaseActivity {
         BobApplication.application.getBuild().inject(this);
 
         Toast.makeText(application, "I am BobApplication", Toast.LENGTH_SHORT).show();
-
-//        registMessageListener();
 
         titles = new ArrayList<CharSequence>();
         titles.add("会话");
