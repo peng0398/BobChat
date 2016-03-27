@@ -67,8 +67,6 @@ public class ContactFragment extends BaseFragment {
     @Override
     protected void initData() {
 
-        Toast.makeText(getActivity(), "hhhh", Toast.LENGTH_SHORT).show();
-
         helper.getContacts().subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<List<String>>() {
             @Override

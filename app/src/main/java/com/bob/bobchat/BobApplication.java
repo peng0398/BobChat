@@ -3,6 +3,7 @@ package com.bob.bobchat;
 import android.app.Application;
 import android.content.Context;
 
+import com.bob.bobchat.utils.AppModule;
 import com.bob.bobchat.utils.ChatComponent;
 import com.bob.bobchat.utils.ChatModule;
 import com.bob.bobchat.utils.DaggerChatComponent;
@@ -18,6 +19,8 @@ public class BobApplication extends Application {
 
     private static Context context;
 
+    public static  BobApplication application = null;
+
     public ChatComponent getBuild() {
         return build;
     }
@@ -29,7 +32,12 @@ public class BobApplication extends Application {
         super.onCreate();
         context = this.getApplicationContext();
 
-        build = DaggerChatComponent.builder().chatModule(new ChatModule()).build();
+        application = this;
+
+        build = DaggerChatComponent.builder()
+                .chatModule(new ChatModule())
+                .appModule(new AppModule())
+                .build();
 
         EMOptions options = new EMOptions();
         // 默认添加好友时，是不需要验证的，改成需要验证
