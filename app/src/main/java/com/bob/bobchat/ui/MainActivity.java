@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.SparseArray;
+import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.bob.bobchat.BobApplication;
@@ -51,6 +52,8 @@ public class MainActivity extends BaseActivity {
 
     @Inject
     BobApplication application;
+
+    long clickback_Time = 0;
 
     private List<CharSequence> titles;
 
@@ -126,8 +129,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         BobApplication.application.getBuild().inject(this);
-
-        Toast.makeText(application, "I am BobApplication", Toast.LENGTH_SHORT).show();
 
         titles = new ArrayList<CharSequence>();
         titles.add("会话");
@@ -236,4 +237,25 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            exit();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * 退出应用程序
+     */
+    private void exit() {
+
+        if (System.currentTimeMillis() - clickback_Time > 2000) {
+            clickback_Time = System.currentTimeMillis();
+            Toast.makeText(application, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+        } else {
+            finish();
+        }
+    }
 }
