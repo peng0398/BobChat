@@ -14,6 +14,12 @@ import com.hyphenate.chat.EMClient;
 
 import javax.inject.Inject;
 
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+
 /**
  * 开屏页
  */
@@ -28,7 +34,7 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((BobApplication)getApplication()).getBuild().inject(this);
+        ((BobApplication) getApplication()).getBuild().inject(this);
         RelativeLayout rootLayout = (RelativeLayout) findViewById(R.id.splash_root);
         AlphaAnimation animation = new AlphaAnimation(0.3f, 1.0f);
         animation.setDuration(1500);
@@ -49,8 +55,10 @@ public class SplashActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
 
-        new Thread(new Runnable() {
-            public void run() {
+        final Observable<String> observable = Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+
                 if (helper.isLoggedIn()) {
                     // ** 免登陆情况 加载所有本地群和会话
                     //不是必须的，不加sdk也会自动异步去加载(不会重复加载)；
@@ -68,20 +76,28 @@ public class SplashActivity extends BaseActivity {
                         }
                     }
                     //进入主页面
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                    finish();
+                    subscriber.onNext("");
                 } else {
                     try {
                         Thread.sleep(sleepTime);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                    finish();
+                    subscriber.onNext("");
                 }
             }
-        }).start();
+        });
 
+        compositeSubscription.add(observable.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        //进入主页面
+                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                        finish();
+                    }
+                }));
     }
 
 }

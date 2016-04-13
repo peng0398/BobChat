@@ -38,6 +38,5 @@ public class ChatActivity extends BaseActivity{
         args.putString(EaseConstant.EXTRA_USER_ID, user_id);
         chatFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().add(R.id.container, chatFragment).commit();
-
     }
 }
