@@ -4,7 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
 
 import com.bob.bobchat.BobApplication;
@@ -14,6 +15,7 @@ import com.hyphenate.chat.EMClient;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -30,14 +32,17 @@ public class SplashActivity extends BaseActivity {
     @Inject
     ChatHelper helper;
 
+    @Bind(R.id.splash_root)
+    RelativeLayout rootLayout;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         ((BobApplication) getApplication()).getBuild().inject(this);
-        RelativeLayout rootLayout = (RelativeLayout) findViewById(R.id.splash_root);
-        AlphaAnimation animation = new AlphaAnimation(0.3f, 1.0f);
-        animation.setDuration(1500);
+        ScaleAnimation animation = new ScaleAnimation(1.5f, 1.0f, 1.5f, 1.0f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setDuration(2000);
         rootLayout.startAnimation(animation);
     }
 
@@ -55,11 +60,12 @@ public class SplashActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
 
-        final Observable<String> observable = Observable.create(new Observable.OnSubscribe<String>() {
+        final Observable<Boolean> observable = Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
-            public void call(Subscriber<? super String> subscriber) {
+            public void call(Subscriber<? super Boolean> subscriber) {
 
-                if (helper.isLoggedIn()) {
+                boolean result = helper.isLoggedIn();
+                if (result) {
                     // ** 免登陆情况 加载所有本地群和会话
                     //不是必须的，不加sdk也会自动异步去加载(不会重复加载)；
                     //加上的话保证进了主页面会话和群组都已经load完毕
@@ -75,26 +81,31 @@ public class SplashActivity extends BaseActivity {
                             e.printStackTrace();
                         }
                     }
-                    //进入主页面
-                    subscriber.onNext("");
+
                 } else {
                     try {
                         Thread.sleep(sleepTime);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    subscriber.onNext("");
                 }
+                subscriber.onNext(result);
             }
         });
 
         compositeSubscription.add(observable.observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Action1<String>() {
+                .subscribe(new Action1<Boolean>() {
                     @Override
-                    public void call(String s) {
-                        //进入主页面
-                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    public void call(Boolean result) {
+
+                        if (result) {
+                            //进入主页面
+                            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                        } else {
+                            //进入登陆界面
+                            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                        }
                         finish();
                     }
                 }));

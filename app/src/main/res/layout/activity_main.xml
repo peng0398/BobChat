@@ -19,4 +19,6 @@
         app:tabSelectedTextColor="#ff0000"
         app:tabTextColor="#000000"
         android:background="#f2f2f2"/>
+
+    <design
 </LinearLayout>

@@ -11,13 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bob.bobchat.BobApplication;
 import com.bob.bobchat.R;
 import com.bob.bobchat.ui.ChatActivity;
 import com.bob.bobchat.utils.ChatHelper;
-import com.hyphenate.easeui.EaseConstant;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,6 +3,7 @@ package com.bob.bobchat.utils;
 import com.bob.bobchat.ui.MainActivity;
 import com.bob.bobchat.ui.SplashActivity;
 import com.bob.bobchat.ui.fragment.ContactFragment;
+import com.bob.bobchat.ui.fragment.SettingFragment;
 
 import javax.inject.Singleton;
 
@@ -18,6 +19,7 @@ public interface ChatComponent {
     void inject(SplashActivity activity);
     void inject(MainActivity activity);
     void inject(ContactFragment fragment);
+    void inject(SettingFragment fragment);
     // void inject(MyService service);
 }
 
